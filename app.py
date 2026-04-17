@@ -1,5 +1,6 @@
 import os
 import calendar
+import sys
 import tkinter as tk
 from datetime import datetime
 from tkinter import messagebox
@@ -21,6 +22,12 @@ FIXED_SHEETS = ("Tasks", "CompletedTasks", "TaskHistory")
 TEXT = "#0f172a"
 
 
+def get_app_directory():
+    if getattr(sys, "frozen", False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 class TaskWorkbookApp(ttk.Window):
     def __init__(self):
         super().__init__(themename="flatly")
@@ -31,7 +38,7 @@ class TaskWorkbookApp(ttk.Window):
 
         self.workbook = None
         self.worksheet = None
-        self.excel_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tasks_data.xlsx")
+        self.excel_path = os.path.join(get_app_directory(), "tasks_data.xlsx")
 
         self.current_sheet_name = ""
         self.headers = []
